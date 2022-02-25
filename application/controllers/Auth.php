@@ -10,7 +10,8 @@ class Auth extends CI_Controller
     }
     public function index()
     {
-        $this->load->view('templates/auth_header');
+        $data['title'] = 'Login Page';
+        $this->load->view('templates/auth_header', $data);
         $this->load->view('auth/login');
         $this->load->view('templates/auth_footer');
     }
@@ -35,6 +36,8 @@ class Auth extends CI_Controller
             ];
 
             $this->db->insert('user', $data);
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+            Congratulations! your account has been created. Please Login</div>');
             redirect('auth');
         }
     }
@@ -42,7 +45,9 @@ class Auth extends CI_Controller
     private function validation()
     {
         $this->form_validation->set_rules('name', 'Name', 'required|trim');
-        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email');
+        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|is_unique[user.email]', [
+            'is_unique' => 'This email has already registered!!'
+        ]);
         $this->validation_password();
     }
 
