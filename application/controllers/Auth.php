@@ -24,7 +24,18 @@ class Auth extends CI_Controller
             $this->load->view('auth/registration');
             $this->load->view('templates/auth_footer');
         } else {
-            echo "register berhasil";
+            $data = [
+                'name' => $this->input->post('name', true),
+                'email' => $this->input->post('email', true),
+                'image' => 'images.jpg',
+                'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
+                'role_id' => 2,   // role_id nilai 2 = member
+                'is_active' => 1,
+                'date_created' => time()
+            ];
+
+            $this->db->insert('user', $data);
+            redirect('auth');
         }
     }
 
