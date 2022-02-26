@@ -26,10 +26,10 @@ class Auth extends CI_Controller
             $this->load->view('templates/auth_footer');
         } else {
             $data = [
-                'name' => $this->input->post('name', true),
-                'email' => $this->input->post('email', true),
+                'name' => htmlspecialchars($this->input->post('name', true)),
+                'email' => htmlspecialchars($this->input->post('email', true)),
                 'image' => 'images.jpg',
-                'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
+                'password' => password_hash($this->input->post('password1'), PASSWORD_DEFAULT),
                 'role_id' => 2,   // role_id nilai 2 = member
                 'is_active' => 1,
                 'date_created' => time()
